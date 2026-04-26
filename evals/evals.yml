@@ -1,0 +1,87 @@
+name: Eval Harness
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # allow manual runs from GitHub UI
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_DB:       partspilot
+          POSTGRES_USER:     postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          pip install \
+            psycopg2-binary \
+            python-dotenv \
+            anthropic \
+            sentence-transformers \
+            numpy \
+            pyyaml \
+            fastapi \
+            uvicorn
+
+      - name: Wait for Postgres
+        run: |
+          until pg_isready -h localhost -p 5432 -U postgres; do
+            echo "Waiting for postgres..."
+            sleep 2
+          done
+
+      - name: Restore database
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          POSTGRES_HOST:     localhost
+          POSTGRES_PORT:     5432
+          POSTGRES_DB:       partspilot
+          POSTGRES_USER:     postgres
+          POSTGRES_PASSWORD: postgres
+        run: |
+          python scripts/ingest.py
+          python scripts/embed.py
+
+      - name: Run eval harness
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          POSTGRES_HOST:     localhost
+          POSTGRES_PORT:     5432
+          POSTGRES_DB:       partspilot
+          POSTGRES_USER:     postgres
+          POSTGRES_PASSWORD: postgres
+        run: |
+          python evals/harness.py
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results-${{ github.sha }}
+          path: evals/results/
+          retention-days: 30

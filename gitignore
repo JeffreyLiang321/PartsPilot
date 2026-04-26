@@ -1,0 +1,19 @@
+# Environment — NEVER commit credentials
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Data files — too large for git, regenerate with scripts
+data/raw_catalog.jsonl
+data/raw_substitutions.jsonl
+
+# OS
+.DS_Store

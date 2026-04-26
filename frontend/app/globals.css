@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-primary:   #0A0A0F;
+  --bg-secondary: #111118;
+  --bg-elevated:  #18181F;
+  --bg-border:    #242430;
+  --amber:        #F59E0B;
+  --amber-bright: #FBBF24;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted:   #52525B;
+  --green:        #22C55E;
+  --red:          #EF4444;
+  --yellow:       #EAB308;
+  --blue:         #3B82F6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* Monospace for part numbers */
+.mono { font-family: var(--font-geist-mono), monospace; }
