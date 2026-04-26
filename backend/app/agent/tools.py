@@ -312,6 +312,7 @@ class ToolExecutor:
             "lead_time_days":       r["lead_time_days"],
             "product_url":          r["product_url"],
             "datasheet_url":        r["datasheet_url"],
+            "parameters":           dict(r["parameters"]) if r["parameters"] else {}, 
         }
 
     def _find_substitution(self, mpn: str, in_stock_only: bool = True) -> dict:
