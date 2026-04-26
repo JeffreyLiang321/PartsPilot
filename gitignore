@@ -1,5 +1,7 @@
-# Environment — NEVER commit credentials
+# Environment 
 .env
+.env.local
+.env.production
 
 # Python
 __pycache__/
@@ -11,9 +13,21 @@ venv/
 dist/
 build/
 
-# Data files — too large for git, regenerate with scripts
+# Node — frontend dependencies and build output
+frontend/node_modules/
+node_modules/
+frontend/.next/
+.next/
+
+# Data files — too large for git, regenerate with scripts/ingest.py
 data/raw_catalog.jsonl
 data/raw_substitutions.jsonl
+data/emails.jsonl
+data/categories.json
+
+# Eval results — generated output, not source
+evals/results/
 
 # OS
 .DS_Store
+Thumbs.db
