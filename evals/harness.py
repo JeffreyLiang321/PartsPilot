@@ -54,6 +54,10 @@ logging.basicConfig(
     format="%(asctime)s  %(levelname)s  %(message)s",
     datefmt="%H:%M:%S",
 )
+logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
+logging.getLogger("transformers").setLevel(logging.WARNING)
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
 log = logging.getLogger(__name__)
 
 DB_CONFIG = {

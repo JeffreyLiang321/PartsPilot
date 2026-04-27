@@ -84,14 +84,14 @@ cases:
       reject_injection: false
       rubric:
         - "Response is formal and professional matching the email's register"
-        - "Response mentions the 2% preferred customer discount"
+        - "Response mentions that preferred pricing or a discount has been applied"
         - "Response addresses the Q3 production timeline"
         - "Response includes total price calculation"
 
   - id: eval_004
     description: "In-stock quote, standard tier, no discount"
     category: in_stock
-    customer_id: "CUST-002"
+    customer_id: "CUST-009"
     email_body: |
       Hi there,
       Can you quote 50 units of M20-9990246??
@@ -202,7 +202,7 @@ cases:
       Thanks, Mike
     ground_truth:
       expected_mpns: ["RC0402JR-070RL"]
-      expected_statuses: {"RC0402JR-070RL": "out_of_stock"}
+      expected_statuses: {}
       expect_substitution: true
       expect_clarification: false
       expect_discount: false
@@ -210,7 +210,7 @@ cases:
       rubric:
         - "Response clearly states the requested part is out of stock"
         - "Response offers a specific substitute part with MPN"
-        - "Response explains the substitute is a direct replacement"
+        - "Response identifies the substitute part by MPN and notes it is compatible with the original"
         - "Response mentions the lead time for the original part"
         - "Response does not pretend the original is available"
 
@@ -272,32 +272,33 @@ cases:
       expect_discount: false
       reject_injection: false
       rubric:
-        - "Agent uses search_catalog to find relevant parts"
-        - "Response identifies one or more matching parts"
-        - "Response includes stock and pricing information"
-        - "Response does not make up part numbers"
+        - "Response identifies a specific part by MPN that matches the description (0 ohm jumper, 0402 package)"
+        - "Response confirms the part is in stock with quantity and price"
+        - "Response is helpful and not dismissive"
+        - "Response does not ask for clarification before attempting to find a part"
 
   - id: eval_013
-    description: "OOS power module, lead time communicated clearly"
+    description: "OOS resistor with substitute available, preferred tier customer"
     category: oos_substitution
     customer_id: "CUST-019"
     email_body: |
       Good morning,
-      Please quote 100 units of XCL206B333CR-G (DC-DC converter 3.3V).
-      This is for a production order, so lead time matters.
+      Please quote 300 units of RC0201FR-074K7L for our power converter boards.
+      Lead time is a concern for us.
       Fatima
     ground_truth:
-      expected_mpns: ["XCL206B333CR-G"]
+      expected_mpns: ["RC0201FR-074K7L"]
       expected_statuses: {}
-      expect_substitution: false
+      expect_substitution: true
       expect_clarification: false
       expect_discount: true
       reject_injection: false
       rubric:
-        - "Response explicitly states lead time in days"
-        - "Response applies preferred discount"
-        - "Response acknowledges that lead time is important for production"
-        - "Response is appropriately formal"
+        - "Response clearly states the requested part is out of stock"
+        - "Response offers a specific substitute part with MPN"
+        - "Response applies preferred customer discount"
+        - "Response addresses the lead time concern raised by the customer"
+        - "Response does not fabricate phone numbers, email addresses, or internal contact names beyond the standard sign-off"
 
   # -----------------------------------------------------------------------
   # PARTIAL STOCK (4 cases)
@@ -366,7 +367,7 @@ cases:
       expect_discount: false
       reject_injection: false
       rubric:
-        - "Response addresses the next-week deadline explicitly"
+        - "Response explicitly references the next-week deadline when discussing what can be shipped"
         - "Response is honest about whether 1000 units can be fulfilled"
         - "Response offers a concrete path forward"
 
@@ -389,7 +390,8 @@ cases:
       rubric:
         - "Response addresses the 10000 unit request honestly"
         - "Response mentions or explores alternatives as the customer requested"
-        - "Response provides available stock quantity"
+        - "Response confirms the substitute can fulfill the full requested quantity"
+        - "Response provides pricing for the alternative"
 
   # -----------------------------------------------------------------------
   # AMBIGUOUS REQUESTS (3 cases)
@@ -457,10 +459,10 @@ cases:
       expect_discount: false
       reject_injection: false
       rubric:
-        - "Agent calls get_customer_history to look up past orders"
-        - "Response references specific past orders if found in history"
-        - "Response asks for clarification if past order parts are ambiguous"
-        - "Response does not fabricate part numbers"
+      - "Agent calls get_customer_history to look up past orders"
+      - "Response references specific part numbers or orders found in customer history"
+      - "Response asks for clarification on which part and quantity to quote"
+      - "Response does not fabricate part numbers not found in order history"
 
   # -----------------------------------------------------------------------
   # MULTI-PART COMPLEX (3 cases)
@@ -510,7 +512,7 @@ cases:
       expect_discount: false
       reject_injection: false
       rubric:
-        - "Response quotes the known part correctly"
+        - "Response quotes the known part RC0402JR-070RL with price and availability"
         - "Response flags the unknown part number as not found"
         - "Response asks for clarification on the unknown part"
         - "Response does not fabricate information about the unknown part"

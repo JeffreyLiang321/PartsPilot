@@ -330,6 +330,9 @@ class ToolExecutor:
                 WHERE LOWER(source_mpn) = LOWER(%s)
                 {stock_clause}
                 ORDER BY
+                    CASE WHEN LOWER(substitute_mpn) IN (
+                        SELECT LOWER(manufacturer_part_number) FROM parts WHERE stock_qty > 0
+                    ) THEN 0 ELSE 1 END,
                     CASE substitute_type
                         WHEN 'Direct'               THEN 1
                         WHEN 'MFR Recommended'      THEN 2
@@ -339,7 +342,7 @@ class ToolExecutor:
                         ELSE 6
                     END,
                     qty_available DESC
-                LIMIT 2
+                LIMIT 5
             """, (mpn,))
             rows = [dict(r) for r in cur.fetchall()]
 
