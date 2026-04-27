@@ -93,7 +93,7 @@ def create_tables(conn):
                 lead_time_days          INTEGER DEFAULT 0,
 
                 -- Embedding for semantic search (populated separately)
-                embedding               vector(1536),
+                embedding               vector(384),
 
                 created_at              TIMESTAMPTZ DEFAULT NOW()
             );
