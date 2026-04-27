@@ -10,7 +10,7 @@ on:
 jobs:
   evals:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
 
     services:
       postgres:
@@ -37,16 +37,7 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: |
-          pip install \
-            psycopg2-binary \
-            python-dotenv \
-            anthropic \
-            sentence-transformers \
-            numpy \
-            pyyaml \
-            fastapi \
-            uvicorn
+        run: pip install -r requirements.txt
 
       - name: Wait for Postgres
         run: |
@@ -57,15 +48,9 @@ jobs:
 
       - name: Restore database
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          POSTGRES_HOST:     localhost
-          POSTGRES_PORT:     5432
-          POSTGRES_DB:       partspilot
-          POSTGRES_USER:     postgres
-          POSTGRES_PASSWORD: postgres
+          PGPASSWORD: postgres
         run: |
-          python scripts/ingest.py
-          python scripts/embed.py
+          psql -h localhost -U postgres -d partspilot -f db_dump.sql
 
       - name: Run eval harness
         env:
