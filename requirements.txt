@@ -1,0 +1,9 @@
+anthropic
+psycopg2-binary
+sentence-transformers
+rank-bm25
+numpy
+fastapi
+uvicorn
+python-dotenv
+pyyaml
