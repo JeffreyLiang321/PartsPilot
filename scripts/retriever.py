@@ -48,7 +48,13 @@ DB_CONFIG = {
 }
 
 EMBED_MODEL = "all-MiniLM-L6-v2"
-_embed_model = SentenceTransformer(EMBED_MODEL)
+_embed_model = None
+
+def get_embed_model():
+    global _embed_model
+    if _embed_model is None:
+        _embed_model = SentenceTransformer(EMBED_MODEL)
+    return _embed_model
 TOP_K       = 10   # number of results to return
 
 
@@ -194,7 +200,7 @@ _model = None
 # NEW
 def get_embedding(text: str) -> list[float]:
     """Embed a query string using the local sentence transformer model."""
-    return _embed_model.encode([text], convert_to_numpy=True)[0].tolist()
+    return get_embed_model().encode([text], convert_to_numpy=True)[0].tolist()
 
 
 def vector_search(conn, query: str, top_k: int = TOP_K,
