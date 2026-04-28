@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { runAgent, fetchEmail, type Email, type AgentResult, type ToolCall, type LineItem } from '../../lib/api'
 import {
@@ -245,7 +245,7 @@ function QuoteTable({ result }: { result: AgentResult }) {
 // Main quote page
 // ---------------------------------------------------------------------------
 
-export default function QuotePage() {
+function QuotePageInner() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const emailId = searchParams.get('emailId')
@@ -492,5 +492,19 @@ export default function QuotePage() {
         )}
       </main>
     </div>
+  )
+}
+
+// wrapping in Suspense to show loader while emails are fetched
+export default function QuotePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center"
+           style={{ background: 'var(--bg-primary)' }}>
+        <Loader2 size={20} className="animate-spin" style={{ color: 'var(--amber)' }} />
+      </div>
+    }>
+      <QuotePageInner />
+    </Suspense>
   )
 }
