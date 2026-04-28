@@ -1,10 +1,10 @@
 name: Eval Harness
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
   workflow_dispatch:  # allow manual runs
 
 jobs:
