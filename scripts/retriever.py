@@ -351,7 +351,7 @@ class PartRetriever:
 
 
 # ---------------------------------------------------------------------------
-# Benchmark — run this to generate the comparison table for your README
+# Benchmark to generate the comparison table for README
 # ---------------------------------------------------------------------------
 
 BENCHMARK_QUERIES = [
