@@ -4,6 +4,8 @@ An autonomous AI sales agent for an electronics parts distributor. A customer se
 
 Built on the Anthropic API (Claude Sonnet), PostgreSQL + pgvector, and a hand-rolled agentic loop with no LangChain, no LlamaIndex.
 
+![PartsPilot UI](assets/frontend_demo.png)
+
 ---
 
 ## Inspiration & Context

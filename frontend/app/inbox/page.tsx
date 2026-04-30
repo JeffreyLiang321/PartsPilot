@@ -90,6 +90,15 @@ export default function InboxPage() {
           )}
         </div>
 
+        {/* Hosting disclaimer since on free Render tier */}
+        <div className="flex items-center gap-2 mb-6 px-3 py-2 rounded-lg"
+          style={{ background: 'var(--bg-elevated)', border: '1px solid var(--bg-border)' }}>
+          <AlertCircle size={13} style={{ color: 'var(--text-muted)' }} className="shrink-0" />
+          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+            Hosted on Render's free tier — if a request fails, wait a moment and try again.
+          </p>
+        </div>
+
         {/* Error */}
         {error && (
           <div className="flex items-center gap-3 p-4 rounded-lg mb-6"
