@@ -50,7 +50,7 @@ loop.py ──► Agentic loop (raw Anthropic SDK, no framework)
 harness.py ──► 25 eval cases, dual scoring (exact match + LLM judge)
     │
     ▼
-evals.yml ──► GitHub Actions CI on every push to main
+evals.yml ──► GitHub Actions workflow triggered manually via Github Actions UI
     │
     ▼
 Next.js frontend ──► email submission + trajectory viewer
@@ -286,7 +286,7 @@ GitHub Actions workflow triggered on every push and PR to `main`.
 
 Spins up a `pgvector/pgvector:pg16` service container, restores the database via `ingest.py` and `embed.py`, then runs the full eval harness. Results are uploaded as a build artifact retained for 30 days.
 
-This makes the eval harness a regression gate — a change that drops the pass rate is visible in CI before it merges.
+This makes the eval harness a regression gate — a change that drops the pass rate is visible in CI before it merges. Slight change now that I don't run the Github Actions worfklow every push, honestly to avoid burning API credits every push.
 
 ---
 
